@@ -14,27 +14,25 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Build Fabric Mod
+      - name: Build Fabric and Forge
         run: |
           if [ -d "fabric" ]; then
             cd fabric
             gradle wrapper --gradle-version 8.5
             chmod +x gradlew
             ./gradlew build
+            cd ..
           fi
-
-      - name: Build Forge Mod
-        run: |
           if [ -d "forge" ]; then
             cd forge
             gradle wrapper --gradle-version 8.5
             chmod +x gradlew
             ./gradlew build
+            cd ..
           fi
 
       - uses: actions/upload-artifact@v4
         with:
           name: NOVAbomba-JARs
           path: |
-            fabric/build/libs/*.jar
-            forge/build/libs/*.jar
+            **/build/libs/*.jar
