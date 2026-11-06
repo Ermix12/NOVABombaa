@@ -14,18 +14,24 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Build Fabric and Forge
+      - name: Download Gradle 8.5 Binary and Build Fabric & Forge
         run: |
+          # Pobieramy bezpośrednio dystrybucję Gradle 8.5, żeby uniknąć nowszych wersji
+          wget https://services.gradle.org/distributions/gradle-8.5-bin.zip
+          unzip -q gradle-8.5-bin.zip
+          export PATH=$PWD/gradle-8.5/bin:$PATH
+
           if [ -d "fabric" ]; then
             cd fabric
-            gradle wrapper --gradle-version 8.5
+            gradle wrapper --gradle-version 8.5 --distribution-type bin
             chmod +x gradlew
             ./gradlew build
             cd ..
           fi
+
           if [ -d "forge" ]; then
             cd forge
-            gradle wrapper --gradle-version 8.5
+            gradle wrapper --gradle-version 8.5 --distribution-type bin
             chmod +x gradlew
             ./gradlew build
             cd ..
